@@ -11,7 +11,6 @@ services:
       - microservice-network
     volumes:
       - mongodb-data:/data/db
- 
 
   mysql-container:
     container_name: mysql-db

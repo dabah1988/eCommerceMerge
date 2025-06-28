@@ -1,3 +1,0 @@
-Mes fichiers de déploiement
-pour azure aks
-Mon deploiement est Ok

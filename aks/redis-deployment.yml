@@ -1,23 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rabbitmq-deployment
+  name: redis-deployment
   namespace: ecommerce-namespace
   labels:
-    app: rabbitmq
+    app: redis
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: rabbitmq
+      app: redis
   template:
     metadata:
       labels:
-        app: rabbitmq
+        app: redis
     spec:
       containers:
-      - name: rabbitmq
-        image: rabbitmq:3.8-management
+      - name: redis
+        image: myregistrykubernetes.azurecr.io/redis:latest
         ports:
-        - containerPort: 5672
-        - containerPort: 15672
+        - containerPort: 6379
