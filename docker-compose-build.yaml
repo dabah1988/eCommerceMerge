@@ -1,0 +1,163 @@
+services:
+  mongodb-container:
+    container_name: mongo-db
+    image: mongodb-image:1.0
+    build:
+      context: ./mongodb
+      dockerfile:  Dockerfile
+    ports:
+     - "27017:27017"
+    networks:
+      - microservice-network
+    volumes:
+      - mongodb-data:/data/db
+ 
+
+  mysql-container:
+    container_name: mysql-db
+    image: mysql-image:latest
+    build:
+      context: ./mysql
+      dockerfile:  Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: MyLove@1988!
+      MYSQL_DATABASE: ecommerceproductsdatabase
+    ports:
+     - "3306:3306"
+    volumes:
+     - mysql-data:/var/lib/mysql
+    networks:
+      - microservice-network
+
+  postgres-container:
+    container_name: postgres-db
+    image: postgres-image:latest
+    build:
+      context: ./postgres
+      dockerfile:  Dockerfile
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: D@bson2043!
+      POSTGRES_DB: eCommerceUsers
+    ports:
+     - "5432:5432"
+    networks:
+      - microservice-network
+
+  redis:
+    image: redis:latest
+    ports:
+     - "6379:6379"
+    networks:
+      - microservice-network
+  rabbitmq:
+    image: rabbitmq:3.8-management
+    ports:
+     - "5672:5672"
+     - "15672:15672"
+    networks:
+     - microservice-network
+
+  apigateway-container:
+    container_name: api-getway
+    image: api-getway-image:1.0
+    build:
+      context: ./OrderMicroService.ApiGateway
+      dockerfile: Dockerfile 
+    depends_on:
+      - orders-microservice
+      - products-microservice
+      - users-microservice
+    ports:
+     - "5000:8080"
+    networks:
+      - microservice-network
+ 
+  users-microservice:
+    container_name: users-microservice
+    image:  users-microservice:latest
+    build:
+      context: ./eCommerce.Solution.UserMicroService
+      dockerfile:  Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__PostgresConnection=Host=postgres;Port=5432;Database=eCommerceUsers;Username=postgres;Password=D@bson2043!
+      - POSTGRES_HOST=postgres-db
+      - POSTGRES_DATABASE=eCommerceUsers
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=D@bson2043!
+      - RABBITMQ_UserName=admin
+      - RABBITMQ_Password=admin123
+      - RABBITMQ_users_Exchange=users.exchange
+    networks:
+      - microservice-network
+      - users-postgres-network
+    depends_on:
+      - postgres-container 
+
+  products-microservice:
+    container_name: products-microservice
+    image:  products-microservice:latest
+    build:
+      context: ./eCommerceSolution.ProductMicroService
+      dockerfile:  Dockerfile
+    depends_on:
+      - mysql-container
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - MYSQL_HOST=mysql-container
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=ecommerceproductsdatabase 
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=MyLove@1988!
+      - RABBITMQ_UserName=admin
+      - RABBITMQ_Password=admin123
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_Products_Exchange=product.exchange
+    networks:
+      - microservice-network
+      - products-mysql-network
+
+  orders-microservice:
+    image: orders-microservice:latest
+    build: 
+     context:  ./eCommerSolution.OrderMicroService/
+     dockerfile: Dockerfile
+    environment:
+     - ASPNETCORE_ENVIRONMENT=Development
+     - MONGODB_HOST=mongodb-container
+     - MONGODB_PORT=27017
+     - MONGODB_DATABASE=OrdersDatabase
+     - UsersMicroservicePort=8080
+     - UsersMicroserviceName=apigateway
+     - ProductsMicroservicePort=8080
+     - ProductsMicroserviceName=apigateway
+     - REDIS_HOST=redis
+     - REDIS_PORT=6379
+     - RabbitMQ_HostName=rabbitmq
+     - RabbitMQ_Port=5672
+     - RabbitMQ_UserName=admin
+     - RabbitMQ_Password=admin123
+     - RabbitMQ_Products_Exchange=products.exchange
+    networks:
+     -  microservice-network
+     -  orders-mongodb-network
+    depends_on: 
+     - mongodb-container
+     - rabbitmq
+     - redis
+
+ 
+ 
+networks:
+  microservice-network:
+   driver: bridge
+  users-postgres-network:
+   driver: bridge
+  products-mysql-network:
+    driver: bridge
+  orders-mongodb-network:
+    driver: bridge
+volumes:
+  mongodb-data:
+  mysql-data:

@@ -1,0 +1,18 @@
+services:
+  api-gateway:
+    image: getway-api-image:1.0
+    container_name: api-gateway
+    # build:
+    #   context: .
+    #   dockerfile: eCommerSolution.ApiGateway/Dockerfile
+    ports:
+      - "5000:8080"
+    volumes:
+      - ./ocelot.json:/ocelot/ocelot.json
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - microservice-network
+networks:
+  microservice-network:
+    external: true

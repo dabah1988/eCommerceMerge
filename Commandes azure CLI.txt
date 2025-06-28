@@ -1,0 +1,117 @@
+-- Create a group of ressources
+az group create --name ecommerce-microservice-ressource-group --location westeurope
+
+-- create a container registry
+az acr create --resource-group ecommerce-microservice-ressource-group --name registryappmicroservice --sku Basic --location westeurope
+
+-- connexion to container registry 
+az acr login --name registryappmicroservice
+
+
+
+
+
+
+-- Se connecter à azure
+az login --use-device-code --tenant 8b91cfba-6c1d-4dc6-81e9-79facd7f9d4f
+
+-- Create a service plan
+az appservice plan create  --name microservice-plan --resource-group ecommerce-microservice-ressource-group --sku B1 --is-linux
+
+-- Create web App
+az webapp create --resource-group ecommerce-microservice-ressource-group --plan microservice-plan  --name webAppMicroServiceEcommerce --deployment-container-image-name registryappmicroservice.azurecr.io/angular-client-image-devfix:1.0   
+
+
+
+--list of webApp
+az webapp List --resource-group ecommerce-microservice-ressource-group
+
+-- login for ressource groups
+az acr login --name registryappmicroservice --resource-group ecommerce-microservice-ressource-group
+
+--  Tagger mon image docker
+docker tag webapiazureimage:1.0 registryappmicroservice.azurecr.io/webapiazureimage:1.0
+
+-- push acr 
+docker push registryappmicroservice.azurecr.io/webapiazureimage:1.0
+
+--  set container 
+az webapp config container set --name webAppTime --resource-group ecommerce-microservice-ressource-group --container-image-name registryappmicroservice.azurecr.io/azurewebapidemo:1.0
+
+-- download logs
+az webapp log  download   --name ProductsWebAppContainer  --resource-group ecommerce-microservice-ressource-group --log-file logs.zip
+az webapp log  download   --name UsersWebAppContainer   --resource-group ecommerce-microservice-ressource-group --log-file logs.zip
+
+az role assignment create --assignee <principalId> --scope /subscriptions/cf9624db-caba-4d7b-b10f-a7d29144043f/resourceGroups/ecommerce-microservice-ressource-group/providers/Microsoft.ContainerRegistry/registries/webAppTime --role AcrPull
+
+docker run -p 8080:8080 --name webAppAzure_Local registryappmicroservice.azurecr.io/azurewebapidemo:1.0
+
+
+-- download source code
+az webapp log  download   --name webAppTime3 --resource-group ecommerce-microservice-ressource-group --log-file logs.zip
+
+-- Chande config to environment
+az webapp config appsettings set --resource-group ecommerce-microservice-ressource-group --name webAppAzure3 --settings ASPNETCORE_ENVIRONMENT=Development 
+
+-- List all container in specific ressource group
+az acr list --resource-group ecommerce-microservice-ressource-group --output table
+
+-- displat details on specific contener
+az acr show --name registryappmicroservice
+
+
+---------------  tag image to azure -------------------------------
+
+-- Tag all my image in local docker to azure account
+docker tag getway-api-image:1.0 registryappmicroservice.azurecr.io/getway-api-image:1.0
+docker push registryappmicroservice.azurecr.io/getway-api-image:1.0
+
+
+docker tag usermicroservice-image:1.0 registryappmicroservice.azurecr.io/usermicroservice-image:1.0
+docker push registryappmicroservice.azurecr.io/usermicroservice-image:1.0
+
+docker tag angular-client-image-devfix:1.0 registryappmicroservice.azurecr.io/angular-client-image-devfix:1.0
+docker push registryappmicroservice.azurecr.io/angular-client-image-devfix:1.0
+
+docker tag ordermicroservice-image:1.0 registryappmicroservice.azurecr.io/ordermicroservice-image:1.0
+docker push registryappmicroservice.azurecr.io/ordermicroservice-image:1.0
+
+docker tag productmicroservice-image:1.0 registryappmicroservice.azurecr.io/productmicroservice-image:1.0
+docker push registryappmicroservice.azurecr.io/productmicroservice-image:1.0
+
+docker tag rabbitmq:3-management registryappmicroservice.azurecr.io/rabbitmq:3-management
+docker push registryappmicroservice.azurecr.io/rabbitmq:3-management
+
+docker tag mysql:8.0 registryappmicroservice.azurecr.io/mysql:8.0
+docker push registryappmicroservice.azurecr.io/mysql:8.0
+
+docker tag redis:latest registryappmicroservice.azurecr.io/redis:latest
+docker push registryappmicroservice.azurecr.io/redis:latest
+
+docker tag mongo:6.0 registryappmicroservice.azurecr.io/mongo:6.0
+docker push registryappmicroservice.azurecr.io/mongo:6.0
+  
+  -- deploiement all my conteneur 
+ az webapp create  --resource-group ecommerce-microservice-ressource-group  --plan WindowsPlan  --name UsersWebAppContainer   --deployment-container-image-name registryappmicroservice.azurecr.io/usermicroservice-image:1.0
+ az webapp create  --resource-group ecommerce-microservice-ressource-group  --plan WindowsPlan  --name GetWayWebAppContainer   --deployment-container-image-name registryappmicroservice.azurecr.io/getway-api-image:1.0
+ az webapp create  --resource-group ecommerce-microservice-ressource-group  --plan WindowsPlan  --name MyMongoDbContainer   --deployment-container-image-name registryappmicroservice.azurecr.io/mongo:6.0
+ az webapp create  --resource-group ecommerce-microservice-ressource-group  --plan WindowsPlan  --name MyMysqlContainer   --deployment-container-image-name registryappmicroservice.azurecr.io/mysql:8.0
+ az webapp create  --resource-group ecommerce-microservice-ressource-group  --plan WindowsPlan  --name ProductsWebAppContainer   --deployment-container-image-name registryappmicroservice.azurecr.io/productmicroservice-image:1.0
+ az webapp create  --resource-group ecommerce-microservice-ressource-group  --plan WindowsPlan  --name MyRabbitMQContainer   --deployment-container-image-name registryappmicroservice.azurecr.io/rabbitmq:3-management
+ az webapp create  --resource-group ecommerce-microservice-ressource-group  --plan WindowsPlan  --name MyRedisContainer   --deployment-container-image-name registryappmicroservice.azurecr.io/redis:latest
+
+
+
+
+
+ 
+ --  Get parameters for credentials registry 
+ Examples from AI knowledge base:
+az acr credential show -n registryappmicroservice
+Get the login credentials for an Azure Container Registry.
+
+az acr credential show -n myregistry --query username
+Get the username used to log in to an Azure Container Registry.
+
+az acr credential show -n myregistry --query 'passwords[0].value'
+Get a password used to log in to an Azure Container Registry.

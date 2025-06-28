@@ -1,0 +1,270 @@
+{
+  "Routes": [
+    //:::::::::::::::::::::::::::::::::: For Orders ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    {
+      "UpstreamPathTemplate": "/gateway/Orders",
+      "DownstreamPathTemplate": "/api/Orders",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+          /*
+           https://localhost:5001/gateway/Orders
+          http://localhost:6001/api/Orders
+          */
+        }
+      ],
+      "UpstreamHttpMethod": [ "Get", "Post", "Options" ],
+      "UpstreamScheme": "Https",
+      "DownstreamScheme": "Https",
+      "FileCacheOptions": {
+        "TtlSeconds": 30,
+        "Region": "orders"
+      }
+
+    },
+
+    //Third Route for  productId
+    {
+      "UpstreamPathTemplate": "/gateway/Orders/by-productId/{productId}",
+      "DownstreamPathTemplate": "/api/Orders/by-productId/{productId}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamScheme": "Https",
+      "DownstreamScheme": "Https"
+    },
+
+    //fourth route : orders by date :
+    {
+      "UpstreamPathTemplate": "/gateway/Orders/by-date/{orderDate}",
+      "DownstreamPathTemplate": "/api/Orders/by-date/{orderDate}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamScheme": "Https",
+      "DownstreamScheme": "Https",
+      "FileCacheOptions": {
+        "TtlSeconds": 30,
+        "Region": "orders"
+      }
+    },
+
+    //fith route : orders by userId :
+    {
+      "UpstreamPathTemplate": "/gateway/Orders/by-userId/{userId}",
+      "DownstreamPathTemplate": "/api/Orders/by-userId/{userId}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamScheme": "Https",
+      "DownstreamScheme": "Https",
+      "FileCacheOptions": {
+        "TtlSeconds": 60,
+        "Region": "orders"
+      }
+    },
+
+    //sixth route : put, delete by orderId :
+    {
+      "UpstreamPathTemplate": "/gateway/Orders/orderId/{orderId}",
+      "DownstreamPathTemplate": "/api/Orders/orderId/{orderId}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete", "Options" ],
+      "UpstreamScheme": "Https",
+      "DownstreamScheme": "Https"
+    },
+
+
+    //:::::::::::::::::::::::::::::::::::::::::: End orders :::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    //::::::::::::::::::::::::::::::::::::::::::For Products :::::::::::::::::::::::::::::::::::::::::::::::::
+    //first Route / for products
+
+    {
+      "UpstreamPathTemplate": "/",
+      "DownstreamPathTemplate": "/api/products",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 8080
+        }
+      ],
+      "UpstreamScheme": "Https",
+      "DownstreamScheme": "Https"
+    },
+
+    {
+            "UpstreamPathTemplate": "/gateway/products",
+      "DownstreamPathTemplate": "/api/products",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7135
+        }
+      ],
+      "UpstreamHttpMethod": [ "Post", "Put", "Get", "Options" ],
+      "UpstreamScheme": "Https",
+      "DownstreamScheme": "Https",
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 5000,
+        "TimeoutValue": 10000
+      },
+      "RetryOptions": {
+        "RetryCount": 2,
+        "RetryOnServerError": true
+      },
+      "RateLimitOptions": {
+        "Limit": 3,
+        "Period": "60s",
+        "HttPStatusCode": 429,
+        "EnableRateLimiting": true,
+        "PeriodTimespan": 30
+      }
+    },
+
+    //Search by productId
+    {
+      "UpstreamPathTemplate": "/gateway/products/search/product-id/{productId}",
+      "DownstreamPathTemplate": "/api/products/search/product-id/{productId}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7135
+        }
+      ],
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamScheme": "Https",
+      "DownstreamScheme": "Https",
+      "FileCacheOptions": {
+        "TtlSeconds": 30,
+        "Region": "orders"
+      }
+    },
+
+    //Search by  search string
+    {
+      "UpstreamPathTemplate": "/gateway/products/search/{SearchString}",
+      "DownstreamPathTemplate": "/api/products/search/{SearchString}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7135
+        }
+      ],
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamScheme": "Https",
+      "DownstreamScheme": "Https",
+      "FileCacheOptions": {
+        "TtlSeconds": 30,
+        "Region": "orders"
+      }
+    },
+
+    //first Route / for delete products
+    {
+      "UpstreamPathTemplate": "/gateway/products/{productId}",
+      "DownstreamPathTemplate": "/api/products/{productId}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7135
+        }
+      ],
+      "UpstreamHttpMethod": [ "Delete", "Options" ],
+      "UpstreamScheme": "Https",
+      "DownstreamScheme": "Https",
+      "FileCacheOptions": {
+        "TtlSeconds": 30,
+        "Region": "orders"
+      }
+    },
+    //::::::::::::::::::::::::::::::::::::::::::: End products :::::::::::::::::::::::::::::::::::::::::::::::
+
+    //::::::::::::::::::::::::::::::::::::::::::::: For Users :::::::::::::::::::::::::::::::::::::::::::
+    //For registration 
+    {
+      "UpstreamPathTemplate": "/gateway/Authentication/register",
+      "DownstreamPathTemplate": "/api/Authentication/register",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7161
+        }
+      ],
+      "UpstreamHttpMethod": [ "Post", "Options" ],
+      "UpstreamScheme": "Https",
+      "DownstreamScheme": "Https"
+    },
+
+    //For Login : for All Users
+    {
+      "UpstreamPathTemplate": "/gateway/Authentication/login",
+      "DownstreamPathTemplate": "/api/Authentication/login",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7161
+        }
+      ],
+      "UpstreamHttpMethod": [ "Post", "Options" ],
+      "UpstreamScheme": "Https",
+      "DownstreamScheme": "Https"
+    },
+    // For user Id
+    {
+      "UpstreamPathTemplate": "/gateway/Users/{userId}",
+      "DownstreamPathTemplate": "/api/Users/{userId}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7161
+        }
+      ],
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamScheme": "Https",
+      "DownstreamScheme": "Https"
+    },
+
+
+    //For url Authentication Getway
+    {
+      "UpstreamPathTemplate": "/gateway/Authentication",
+      "DownstreamPathTemplate": "/api/Authentication",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7161
+        }
+      ],
+      "UpstreamHttpMethod": [ "Delete", "Put", "Get", "Post", "Options" ],
+      "UpstreamScheme": "Https",
+      "DownstreamScheme": "Https"
+    }
+    //:::::::::::::::::::::::::::::::::::::::::::::: Ends Users :::::::::::::::::::::::::::::::::::::::::::
+
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:5001"
+  }
+
+}

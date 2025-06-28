@@ -1,0 +1,92 @@
+ 
+ -- connect us with tenant id :
+ az login --tenant 8b91cfba-6c1d-4dc6-81e9-79facd7f9d4f
+ 
+ -- create a ressource group  for kubernetes
+ az group create --name ecommerceKubernetesRessourceGroup --location westeurope
+ 
+ -- create a container registry
+az acr create --resource-group ecommerceKubernetesRessourceGroup --name myregistrykubernetes --sku Basic --location westeurope
+
+
+ 
+ -- create kubernetes cluster
+ az aks create --resource-group ecommerceKubernetesRessourceGroup --name ecommerce-aks-cluster --node-count 1 --node-vm-size Standard_B2s --enable-addons monitoring --generate-ssh-keys
+ 
+ -- Tag image to azure registry
+ docker tag demowebapp-api-image:1.0 myregistrykubernetes.azurecr.io/demowebapp-api-image:1.0
+ 
+ -- connect to ACR azure 
+ az acr login --name myregistrykubernetes
+ 
+
+ -- push image tagged to docker 
+docker push myregistrykubernetes.azurecr.io/demowebapp-api-image:1.0
+
+ -- give permissions to cluster ecommerce-aks-cluster  for pushing container registry 
+ az aks update --resource-group ecommerceKubernetesRessourceGroup --name ecommerce-aks-cluster --attach-acr myregistrykubernetes
+
+ -- get credential from particular kubernetes cluster
+ az aks get-credentials --resource-group ecommerceKubernetesRessourceGroup --name ecommerce-aks-cluster 
+ 
+ -- Apply content of deployment manifest
+  kubectl apply -f deployment.yml
+ 
+ -- Get list of deployments
+  kubectl get deployments
+  
+ -- Get Details of one deployment
+   kubectl describe deployment demowebapp-deployment
+   
+ -- Get list of pods
+   kubectl get pods 
+ 
+ -- Get details on pods
+  kubectl describe pod demowebapp-deployment-588d474bd6-s2qwn
+  
+  -- get log of one  pod  
+  kubectl logs  demowebapp-deployment-588d474bd6-s2qwn
+  
+   -- Apply content of service manifest
+  kubectl apply -f service.yml
+  
+   -- Get  list of services
+    kubectl get services 
+
+   -- Get info on our services
+   kubectl get service demowebapp-service
+   
+    -- Get more details on our services
+   kubectl describe service demowebapp-service
+   
+   
+   -- Tag all Docker image and push them o n azure
+    docker tag mysql-image:latest  myregistrykubernetes.azurecr.io/mysql-image:latest 
+	docker push myregistrykubernetes.azurecr.io/mysql-image:latest 
+	
+	docker tag mysql-image:latest  myregistrykubernetes.azurecr.io/postgres-image:latest
+	docker push myregistrykubernetes.azurecr.io/postgres-image:latest
+	
+	docker tag mysql-image:latest  myregistrykubernetes.azurecr.io/mongodb-image:1.0
+	docker push myregistrykubernetes.azurecr.io/mongodb-image:1.0
+    
+	docker tag mysql-image:latest  myregistrykubernetes.azurecr.io/orders-microservice:latest
+	docker push myregistrykubernetes.azurecr.io/orders-microservice:latest
+	
+	docker tag mysql-image:latest  myregistrykubernetes.azurecr.io/users-microservice:latest
+	docker push myregistrykubernetes.azurecr.io/users-microservice:latest
+	
+	docker tag mysql-image:latest  myregistrykubernetes.azurecr.io/products-microservice:latest
+	docker push myregistrykubernetes.azurecr.io/products-microservice:latest
+	
+	docker tag mysql-image:latest  myregistrykubernetes.azurecr.io/api-getway-image:1.0
+	docker push myregistrykubernetes.azurecr.io/api-getway-image:1.0
+
+    docker tag mysql-image:latest  myregistrykubernetes.azurecr.io/api-getway-image:1.0
+	docker push myregistrykubernetes.azurecr.io/api-getway-image:1.0
+	
+	docker tag mysql-image:latest  myregistrykubernetes.azurecr.io/rabbitmq:3.8-management
+	docker push myregistrykubernetes.azurecr.io/rabbitmq:3.8-management
+	
+	
+	

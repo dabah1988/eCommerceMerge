@@ -1,0 +1,153 @@
+////////////////////////////////////For Products Micro Service //////////////////////////////////////////
+0-  Create container for API Product MicroService
+docker build -t ecommerce-product-microservices:initial -f ./ProductMicroService/Dockerfile .
+
+0.1 :  exécuter l'image créée 
+docker run  -p 8080:8080   ecommerce-product-microservices:initial 
+
+I- Création du container pour mysql 
+
+Étape 1 : Vérifier les prérequis
+Avant de commencer, assure-toi que :
+✅ Docker Desktop est installé et en cours d'exécution.
+✅ Visual Studio 2022 est configuré pour supporter Docker.
+✅ Le package NuGet Pomelo.EntityFrameworkCore.MySql est bien installé.
+
+Étape 2 : Créer un réseau Docker
+On crée un réseau Docker pour que les conteneurs MySQL et API puissent communiquer.
+
+docker network create mynetwork-mysql-pomelo2
+👉 Ce réseau s'appelle mynetwork et servira à connecter l'API et la base de données.
+
+Étape 3 : Créer et démarrer un conteneur MySQL
+docker run -d --name mysql-container-pomelo --network=mynetwork-mysql-pomelo2 -e MYSQL_ROOT_PASSWORD=MyLove@1988! -e MYSQL_DATABASE=ecommerceproductsdatabase -p 3306:3306 mysql:8.0
+
+Étape 3.1 : Lier le conteneur au réseau 
+docker network connect mynetwork-mysql-pomelo2 mysql-container-pomelo
+
+Étape 4 : Vérifier que les conteneurs fonctionnent
+docker ps
+
+Étape 5 : copier le script sql dans le conteneur
+docker cp WebApiDocker\scripts2.sql mysql-container-pomelo:/scripts.sql
+
+Étape 6 : Exécuter le script sql 
+docker exec -i mysql-container-pomelo sh -c "mysql -uroot -p'MyLove@1988!' ecommerceproductsdatabase < /scripts.sql"
+
+Étape 7 : Vérifier que les conteneurs fonctionnent
+docker ps
+
+Étape 8 : Tester la connexion à mysql
+docker exec -it mysql-container-pomelo mysql -uroot -p"MyLove@1988!"
+
+SHOW DATABASES;
+USE ecommerceproductsdatabase;
+SHOW TABLES;
+select * from  products;
+
+Étape 9 : Appeler une méthode de l'API
+http://localhost:8080/api/products
+
+2 - Création du container pour webApi
+docker build -t resayawebapi -f WebApiDocker/Dockerfile .
+docker build --no-cache -t resayawebapi -f WebApiDocker/Dockerfile .
+
+3 -  on exécute le container
+docker run -d --name resayawebapi-container --network mynetwork-mysql-pomelo2 -p 8080:8080 -e MYSQL_HOST=mysql-container-pomelo -e MYSQL_PASSWORD=MyLove@1988! resayawebapi
+
+3.1 - on exécute le container avec l'image qui sur Docker hub 
+docker run -p 8080:8080 --network=mynetwork-mysql-pomelo2 -e MYSQL_HOST=mysql-container-pomelo  -e MYSQL_PASSWORD=MyLove@1988!  dabson1988/ecommerce-products-microservice:v1.0
+
+4 - on lie le container webApi au container pomelo 
+docker network connect  mynetwork-mysql-pomelo2  resayawebapi-container 
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+-- create image for  UserMicroService
+docker build -t  usermicroservice-image:1.0 .
+
+-- execute docker compose User in  back
+docker-compose -f docker-compose.user.yml down
+docker-compose -f docker-compose.user.yml up -d
+
+-- create image for  productMicroService
+docker build -t  productmicroservice-image:1.0 .
+docker build -t  productmicroserviceapi:latest .
+
+-- execute docker compose Products in back
+docker-compose -f docker-compose.product.yml down
+docker-compose -f docker-compose.product.yml up -d
+
+-- create image for  OrderMicroService
+docker build -t  ordermicroservice-image:1.0 .
+
+-- execute docker compose order in  back
+docker-compose -f docker-compose.order.yml down
+docker-compose -f docker-compose.order.yml up -d
+
+-- connect to mongo db database
+docker exec -it mongo-db mongosh
+
+-- create image for  ApiMicroService Getway
+docker build -t  getway-api-image:1.0 .
+
+-- execute docker compose webapi in  back
+docker-compose -f  docker-compose-getwayApi.yml down
+docker-compose -f  docker-compose-apigetway.yml up -d
+
+-- Vérifier si les conteneur écoute aux port 80
+docker exec -it orders-api netstat -tuln
+docker exec -it users-api netstat -tuln
+docker exec -it products-api netstat -tuln
+
+-- execute docker compose commun
+docker-compose -f  docker-compose.commun.yml up -d
+docker-compose -f  docker-compose.commun.yml down
+
+-- Pour tout supprimer 
+docker-compose -f docker-compose.commun.yml down --rmi all
+
+-- create docker  image 
+docker stop angular-client-dev
+docker build -t angular-client-image-devfix:1.0 .
+docker-compose -f docker-compose.angular2.yml up --build
+
+docker run --name my-angular-client -p 4200:80 angular-client-image:1.0
+
+--- Create all image fimes
+docker build -t  usermicroservice-image:1.0 .
+docker build -t  productmicroservice-image:1.0 .
+docker build -t  ordermicroservice-image:1.0 .
+docker build -t  getway-api-image:1.0 .
+docker build -t angular-client-image-devfix:1.0 .
+
+--- create all contenairs with docker compose
+docker-compose -f  docker-compose.commun.yml up -d
+docker-compose -f  docker-compose.commun.yml down
+
+------  Autres commandes 
+
+docker-compose -f docker-compose.angular2.yml  up -d --build
+
+docker-compose -f docker-compose-order.yml  up -d --build
+
+docker-compose -f  docker-compose-apigetway.yml  up -d --build
+
+docker-compose -f docker-compose-order.yml  down
+
+docker exec -it api-gateway sh
+docker exec -it orders-api sh
+docker exec -it user-postgres sh
+
+docker exec -u root -it users-api sh
+orders-api http://localhost:5000/gateway/products
+
+docker exec -u root -it users-api sh
+
+docker exec -u root -it mysql-db sh
+
+-- se connecter au conteneur  mysql 
+docker exec -it mysql-db bash
+
+-- se connecter en tant que root pour exécuter une requête mysql 
+mysql -u root -p
