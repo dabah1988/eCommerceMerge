@@ -1,0 +1,16 @@
+# Ignorer le dossier Visual Studio
+.vs/
+
+# Dossiers de build
+bin/
+obj/
+
+# Fichiers utilisateur
+*.user
+*.suo
+
+# Logs
+*.log
+
+# Variables d'environnement
+.env
