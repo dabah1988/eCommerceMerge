@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: orders-microservice
-        image: myregistrykubernetes.azurecr.io/orders-microservice:latest
+        image: myregistrykubernetes.azurecr.io/orders-microservice:3.0
         ports:
         - containerPort: 8080
         env:

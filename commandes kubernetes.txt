@@ -74,8 +74,8 @@ docker push myregistrykubernetes.azurecr.io/demowebapp-api-image:1.0
 	docker tag mongo:latest myregistrykubernetes.azurecr.io/mongo:latest
 	docker push myregistrykubernetes.azurecr.io/mongo:latest
     
-	docker tag orders-microservice:latest  myregistrykubernetes.azurecr.io/orders-microservice:2.0
-	docker push myregistrykubernetes.azurecr.io/orders-microservice:2.0
+	docker tag orders-microservice:latest  myregistrykubernetes.azurecr.io/orders-microservice:3.0
+	docker push myregistrykubernetes.azurecr.io/orders-microservice:3.0
 	
 	docker tag users-microservice:latest  myregistrykubernetes.azurecr.io/users-microservice:4.0
 	docker push myregistrykubernetes.azurecr.io/users-microservice:4.0
@@ -167,7 +167,7 @@ docker push myregistrykubernetes.azurecr.io/demowebapp-api-image:1.0
   kubectl logs apigateway-deployment-dbc4bdd4-zdbks --namespace ecommerce-namespace 
   kubectl logs products-microservice-deployment-7bc6c8dcd7-mw7k2 --namespace ecommerce-namespace  
   kubectl logs mysql-deployment-84ccdf995-7slvt  -n ecommerce-namespace  
-  kubectl logs users-microservice-deployment-c7c8ff775-gnqzf   -n ecommerce-namespace  
+  kubectl logs orders-microservice-deployment-5c664d5b6d-j59zq   -n ecommerce-namespace  
 
     --  connexion to mysql 
  kubectl exec -it mysql-deployment-xxxxxx -n ecommerce-namespace -- bash
@@ -181,7 +181,14 @@ docker push myregistrykubernetes.azurecr.io/demowebapp-api-image:1.0
 
 
  kubectl exec -it mysql-deployment-5b547dfd49-phvfv  -n ecommerce-namespace -- bash
+
+ se connecter au conteneur postgres
  kubectl exec -it --namespace ecommerce-namespace postgres-deployment-857d6b7dc8-mcdzr -- psql -U postgres 
+
+ Se connecter au conteneur mongodb 
+kubectl exec -it orders-microservice-deployment-5c664d5b6d-j59zq -n ecommerce-namespace -- mongo
+
+
 
 
  kubectl describe pod mysql -n ecommerce-namespace
