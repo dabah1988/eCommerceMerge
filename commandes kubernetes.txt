@@ -74,11 +74,11 @@ docker push myregistrykubernetes.azurecr.io/demowebapp-api-image:1.0
 	docker tag mongo:latest myregistrykubernetes.azurecr.io/mongo:latest
 	docker push myregistrykubernetes.azurecr.io/mongo:latest
     
-	docker tag orders-microservice:latest  myregistrykubernetes.azurecr.io/orders-microservice:latest
-	docker push myregistrykubernetes.azurecr.io/orders-microservice:latest
+	docker tag orders-microservice:latest  myregistrykubernetes.azurecr.io/orders-microservice:2.0
+	docker push myregistrykubernetes.azurecr.io/orders-microservice:2.0
 	
-	docker tag users-microservice:latest  myregistrykubernetes.azurecr.io/users-microservice:latest
-	docker push myregistrykubernetes.azurecr.io/users-microservice:latest
+	docker tag users-microservice:latest  myregistrykubernetes.azurecr.io/users-microservice:4.0
+	docker push myregistrykubernetes.azurecr.io/users-microservice:4.0
 	
 	docker tag products-microservice:latest  myregistrykubernetes.azurecr.io/products-microservice:5.0
 	docker push myregistrykubernetes.azurecr.io/products-microservice:5.0
@@ -146,12 +146,16 @@ docker push myregistrykubernetes.azurecr.io/demowebapp-api-image:1.0
 	 -- delete all deploiements
 	 kubectl delete deployments --all -n ecommerce-namespace
 	 kubectl delete deployment mysql-deployment-84ccdf995-7slvt -n ecommerce-namespace
-
+	 kubectl delete pod products-microservice-deployment-798d5ddb9d-9k4sn -n ecommerce-namespace
+	 kubectl delete pod  users-microservice-deployment-7d85f7796c-2jv6s -n ecommerce-namespace
 
 
 	 -- Describe  details  on pods 
  kubectl describe pod mongodb-deployment-68c469d44-zmgqr --namespace ecommerce-namespace
  kubectl describe pod mysql-deployment-5b547dfd49-phvfv --namespace ecommerce-namespace
+
+
+
  
   -- delete all images and tag linked to pod
   az acr repository delete --name myregistrykubernetes --repository mongodb-image --yes
@@ -163,9 +167,12 @@ docker push myregistrykubernetes.azurecr.io/demowebapp-api-image:1.0
   kubectl logs apigateway-deployment-dbc4bdd4-zdbks --namespace ecommerce-namespace 
   kubectl logs products-microservice-deployment-7bc6c8dcd7-mw7k2 --namespace ecommerce-namespace  
   kubectl logs mysql-deployment-84ccdf995-7slvt  -n ecommerce-namespace  
+  kubectl logs users-microservice-deployment-c7c8ff775-gnqzf   -n ecommerce-namespace  
 
     --  connexion to mysql 
-	kubectl exec -it mysql-deployment-xxxxxx -n ecommerce-namespace -- bash
+ kubectl exec -it mysql-deployment-xxxxxx -n ecommerce-namespace -- bash
+ kubectl exec -it -n ecommerce-namespace postgres-deployment-857d6b7dc8-mcdzr -- psql -U postgres
+
 
 
 
@@ -174,5 +181,7 @@ docker push myregistrykubernetes.azurecr.io/demowebapp-api-image:1.0
 
 
  kubectl exec -it mysql-deployment-5b547dfd49-phvfv  -n ecommerce-namespace -- bash
+ kubectl exec -it --namespace ecommerce-namespace postgres-deployment-857d6b7dc8-mcdzr -- psql -U postgres 
+
 
  kubectl describe pod mysql -n ecommerce-namespace

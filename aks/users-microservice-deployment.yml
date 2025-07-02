@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: users-microservice
-        image: myregistrykubernetes.azurecr.io/users-microservice:latest
+        image: myregistrykubernetes.azurecr.io/users-microservice:4.0
         ports:
         - containerPort: 9090
         env:
