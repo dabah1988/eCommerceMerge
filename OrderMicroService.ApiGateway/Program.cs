@@ -17,7 +17,7 @@ builder.Services.AddCors(options =>
     });
 });
 //builder.Configuration.AddJsonFile("ocelot.json",optional:false,reloadOnChange:true);
-builder.Configuration.AddJsonFile("/ocelot/ocelot.json", optional: false, reloadOnChange: true);
+builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
 
 builder.Services.AddOcelot()
     .AddPolly();

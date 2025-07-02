@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: postgres
-        image: myregistrykubernetes.azurecr.io/postgres-image:latest
+        image: myregistrykubernetes.azurecr.io/postgres:latest
         env:
         - name: POSTGRES_USER
           value: postgres

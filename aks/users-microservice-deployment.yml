@@ -33,3 +33,5 @@ spec:
           value: postgres
         - name: POSTGRES_PASSWORD
           value: admin
+        - name: ConnectionStrings__PostgresConnection
+          value: Host=postgres;Port=5432;Database=eCommerceUsers;Username=postgres;Password=admin

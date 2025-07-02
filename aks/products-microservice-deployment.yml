@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: products-microservice
-        image: myregistrykubernetes.azurecr.io/products-microservice:latest
+        image: myregistrykubernetes.azurecr.io/products-microservice:5.0
         ports:
         - containerPort: 8080
         env:
@@ -38,8 +38,8 @@ spec:
         - name: RabbitMQ_Port
           value: "5672"
         - name: RabbitMQ_UserName
-          value: guest
+          value: admin
         - name: RabbitMQ_Password
-          value: guest
+          value: admin123
         - name: RabbitMQ_Products_Exchange
           value: products.exchange

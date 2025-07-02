@@ -5,8 +5,8 @@
       "DownstreamPathTemplate": "/api/Orders",
       "DownstreamHostAndPorts": [
         {
-          "Host": "orders-api",
-          "Port": 80
+          "Host": "orders-microservice",
+          "Port": 8080
         }
       ],
       "UpstreamHttpMethod": [ "Get", "Post", "Options" ],
@@ -24,8 +24,8 @@
       "DownstreamPathTemplate": "/api/Orders/by-productId/{productId}",
       "DownstreamHostAndPorts": [
         {
-          "Host": "orders-api",
-          "Port": 80
+          "Host": "orders-microservice",
+          "Port": 8080
         }
       ],
       "UpstreamHttpMethod": [ "Get" ],
@@ -38,8 +38,8 @@
       "DownstreamPathTemplate": "/api/Orders/by-date/{orderDate}",
       "DownstreamHostAndPorts": [
         {
-          "Host": "orders-api",
-          "Port": 80
+          "Host": "orders-microservice",
+          "Port": 8080
         }
       ],
       "UpstreamHttpMethod": [ "Get" ],
@@ -56,8 +56,8 @@
       "DownstreamPathTemplate": "/api/Orders/by-userId/{userId}",
       "DownstreamHostAndPorts": [
         {
-          "Host": "orders-api",
-          "Port": 80
+          "Host": "orders-microservice",
+          "Port": 8080
         }
       ],
       "UpstreamHttpMethod": [ "Get" ],
@@ -74,8 +74,8 @@
       "DownstreamPathTemplate": "/api/Orders/orderId/{orderId}",
       "DownstreamHostAndPorts": [
         {
-          "Host": "orders-api",
-          "Port": 80
+          "Host": "orders-microservice",
+          "Port": 8080
         }
       ],
       "UpstreamHttpMethod": [ "Get", "Put", "Delete", "Options" ],
@@ -89,8 +89,8 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "products-api",
-          "Port": 80
+          "Host": "products-microservice",
+          "Port": 8080
         }
       ],
       "UpstreamScheme": "Http",
@@ -102,8 +102,8 @@
       "DownstreamPathTemplate": "/api/products",
       "DownstreamHostAndPorts": [
         {
-          "Host": "products-api",
-          "Port": 80
+          "Host": "products-microservice",
+          "Port": 8080
         }
       ],
       "UpstreamHttpMethod": [ "Post", "Put", "Get", "Options" ],
@@ -132,8 +132,8 @@
       "DownstreamPathTemplate": "/api/products/search/product-id/{productId}",
       "DownstreamHostAndPorts": [
         {
-          "Host": "products-api",
-          "Port": 80
+          "Host": "products-microservice",
+          "Port": 8080
         }
       ],
       "UpstreamHttpMethod": [ "Get" ],
@@ -150,8 +150,8 @@
       "DownstreamPathTemplate": "/api/products/search/{SearchString}",
       "DownstreamHostAndPorts": [
         {
-          "Host": "products-api",
-          "Port": 80
+          "Host": "products-microservice",
+          "Port": 8080
         }
       ],
       "UpstreamHttpMethod": [ "Get" ],
@@ -168,8 +168,8 @@
       "DownstreamPathTemplate": "/api/products/{productId}",
       "DownstreamHostAndPorts": [
         {
-          "Host": "products-api",
-          "Port": 80
+          "Host": "products-microservice",
+          "Port": 8080
         }
       ],
       "UpstreamHttpMethod": [ "Delete", "Options" ],
@@ -186,8 +186,8 @@
       "DownstreamPathTemplate": "/api/Authentication/register",
       "DownstreamHostAndPorts": [
         {
-          "Host": "users-api",
-          "Port": 80
+          "Host": "users-microservice",
+          "Port": 9090
         }
       ],
       "UpstreamHttpMethod": [ "Post", "Options" ],
@@ -200,8 +200,8 @@
       "DownstreamPathTemplate": "/api/Authentication/login",
       "DownstreamHostAndPorts": [
         {
-          "Host": "users-api",
-          "Port": 80
+          "Host": "users-microservice",
+          "Port": 9090
         }
       ],
       "UpstreamHttpMethod": [ "Get","Post", "Options" ],
@@ -214,8 +214,8 @@
       "DownstreamPathTemplate": "/api/Users/{userId}",
       "DownstreamHostAndPorts": [
         {
-          "Host": "users-api",
-          "Port": 80
+          "Host": "users-microservice",
+          "Port": 9090
         }
       ],
       "UpstreamHttpMethod": [ "Get" ],
@@ -229,8 +229,8 @@
       "DownstreamPathTemplate": "/api/Authentication",
       "DownstreamHostAndPorts": [
         {
-          "Host": "users-api",
-          "Port": 80
+          "Host": "users-microservice",
+          "Port": 9090
         }
       ],
       "UpstreamHttpMethod": [ "Delete", "Put", "Get", "Post", "Options" ],
@@ -239,7 +239,7 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:5000"
+    "BaseUrl": "http://132.220.162.201:8080"
   }
 
 }

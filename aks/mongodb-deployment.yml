@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
         - name: mongodb
-          image: myregistrykubernetes.azurecr.io/mongodb-image:1.0
+          image: myregistrykubernetes.azurecr.io/mongo:latest
           ports: 
             - containerPort: 27017

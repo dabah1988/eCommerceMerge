@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: apigateway
+  namespace: ecommerce-namespace
+  labels:
+    app: apigateway
+spec:
+  selector:
+    app: apigateway
+  type: LoadBalancer
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080           # Port exposé au public (LoadBalancer)
+      targetPort: 8080   # Port sur lequel le container écoute

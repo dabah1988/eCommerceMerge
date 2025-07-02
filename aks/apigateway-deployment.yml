@@ -17,6 +17,9 @@ spec:
     spec:
       containers:
       - name: apigateway
-        image: myregistrykubernetes.azurecr.io/api-getway-image:1.0
+        image: myregistrykubernetes.azurecr.io/api-getway-image:3.0
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: MyLove@1988!
         ports:
         - containerPort: 8080

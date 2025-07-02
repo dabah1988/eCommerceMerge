@@ -19,6 +19,12 @@ az acr create --resource-group ecommerceKubernetesRessourceGroup --name myregist
  -- connect to ACR azure 
  az acr login --name myregistrykubernetes
  
+ --  create all image with file docker compose
+ docker-compose -f  docker-compose-build.yaml  up -d --build
+
+  docker-compose -f  docker-compose-build.yaml down  
+  docker-compose -f docker-compose-build.yaml down -v --rmi all
+
 
  -- push image tagged to docker 
 docker push myregistrykubernetes.azurecr.io/demowebapp-api-image:1.0
@@ -62,11 +68,11 @@ docker push myregistrykubernetes.azurecr.io/demowebapp-api-image:1.0
    
    -- Tag all Docker image and push them o n azure
 	
-	docker tag postgres-image:latest  myregistrykubernetes.azurecr.io/postgres-image:latest
-	docker push myregistrykubernetes.azurecr.io/postgres-image:latest
+	docker tag postgres:latest  myregistrykubernetes.azurecr.io/postgres:latest
+	docker push myregistrykubernetes.azurecr.io/postgres:latest
 	
-	docker tag mongodb-image:1.0 myregistrykubernetes.azurecr.io/mongodb-image:1.0
-	docker push myregistrykubernetes.azurecr.io/mongodb-image:1.0
+	docker tag mongo:latest myregistrykubernetes.azurecr.io/mongo:latest
+	docker push myregistrykubernetes.azurecr.io/mongo:latest
     
 	docker tag orders-microservice:latest  myregistrykubernetes.azurecr.io/orders-microservice:latest
 	docker push myregistrykubernetes.azurecr.io/orders-microservice:latest
@@ -74,18 +80,17 @@ docker push myregistrykubernetes.azurecr.io/demowebapp-api-image:1.0
 	docker tag users-microservice:latest  myregistrykubernetes.azurecr.io/users-microservice:latest
 	docker push myregistrykubernetes.azurecr.io/users-microservice:latest
 	
-	docker tag products-microservice:latest  myregistrykubernetes.azurecr.io/products-microservice:latest
-	docker push myregistrykubernetes.azurecr.io/products-microservice:latest
+	docker tag products-microservice:latest  myregistrykubernetes.azurecr.io/products-microservice:5.0
+	docker push myregistrykubernetes.azurecr.io/products-microservice:5.0
 	
-	docker tag api-getway-image:1.0  myregistrykubernetes.azurecr.io/api-getway-image:1.0
-	docker push myregistrykubernetes.azurecr.io/api-getway-image:1.0
+	docker tag api-getway-image:1.0  myregistrykubernetes.azurecr.io/api-getway-image:3.0
+	docker push myregistrykubernetes.azurecr.io/api-getway-image:3.0
 
-    docker tag mysql-image:latest  myregistrykubernetes.azurecr.io/mysql-image:latest
-	docker push myregistrykubernetes.azurecr.io/mysql-image:latest
+    docker tag mysql:latest  myregistrykubernetes.azurecr.io/mysql:latest
+	docker push myregistrykubernetes.azurecr.io/mysql:latest
 	
 	docker tag rabbitmq:3.8-management  myregistrykubernetes.azurecr.io/rabbitmq:3.8-management
-	docker push myregistrykubernetes.azurecr.io/rabbitmq:3.8-management
-	
+	docker push myregistrykubernetes.azurecr.io/rabbitmq:3.8-management	
 	
    docker tag redis:latest  myregistrykubernetes.azurecr.io/redis:latest
    docker push myregistrykubernetes.azurecr.io/redis:latest
@@ -97,10 +102,38 @@ docker push myregistrykubernetes.azurecr.io/demowebapp-api-image:1.0
 	 kubectl apply -f .
 	 
 	-- get deployment by each file
-	kubectl apply -f mysql-deployement.yml   --OK
-    kubectl apply -f mongodb-deployement.yml
+	kubectl apply -f mysql-deployement.yml  
+	kubectl apply -f mysql.service.yml 
+	
+    kubectl apply -f mongodb-deployment.yml
+	kubectl apply -f mongodb.service.yaml
+
     kubectl apply -f rabbitMQ-deployment.yml
-	 
+	kubectl apply -f rabbitmq-service-deployment.yml
+
+
+    kubectl apply -f redis-deployment.yml
+	kubectl apply -f redis.service.yaml
+
+	kubectl apply -f postgres-deployment.yml
+	kubectl apply -f postgres-service-deployment.yml
+
+
+    kubectl apply -f orders-microservices-deployment.yml
+	kubectl apply -f orders-microservice.service.yaml
+
+	kubectl apply -f products-microservice-deployment.yml
+	kubectl apply -f products-microservice.service.yaml
+
+	kubectl apply -f users-microservice-deployment.yml
+	kubectl apply -f users-microservice.service.yaml
+
+	kubectl apply -f postgres-deployment.yml
+	kubectl apply -f postgres-service-deployment.yml
+	
+	kubectl apply -f apigateway-deployment.yml
+	kubectl apply -f apigateway-service.yaml 
+
 	-- get deployment on specific namespace
 	  kubectl get deployments --namespace ecommerce-namespace
 
@@ -112,17 +145,34 @@ docker push myregistrykubernetes.azurecr.io/demowebapp-api-image:1.0
 
 	 -- delete all deploiements
 	 kubectl delete deployments --all -n ecommerce-namespace
-	 kubectl delete deployment rabbitmq-deployment-5559c4cc8b-nlhvc -n ecommerce-namespace
+	 kubectl delete deployment mysql-deployment-84ccdf995-7slvt -n ecommerce-namespace
 
 
 
 	 -- Describe  details  on pods 
- kubectl describe pod rabbitmq-deployment-5559c4cc8b-hvsxq --namespace ecommerce-namespace
- kubectl describe pod  mysql-deployment-7ff64dc465-v7mrd --namespace ecommerce-namespace
-
+ kubectl describe pod mongodb-deployment-68c469d44-zmgqr --namespace ecommerce-namespace
+ kubectl describe pod mysql-deployment-5b547dfd49-phvfv --namespace ecommerce-namespace
  
+  -- delete all images and tag linked to pod
+  az acr repository delete --name myregistrykubernetes --repository mongodb-image --yes
 
 
-	 -- get log of pod
-  kubectl logs rabbitmq-deployment-5559c4cc8b-nlhvc --namespace ecommerce-namespace
- 
+	 -- get log of pods
+	 kubectl get pods --namespace ecommerce-namespace 
+
+  kubectl logs apigateway-deployment-dbc4bdd4-zdbks --namespace ecommerce-namespace 
+  kubectl logs products-microservice-deployment-7bc6c8dcd7-mw7k2 --namespace ecommerce-namespace  
+  kubectl logs mysql-deployment-84ccdf995-7slvt  -n ecommerce-namespace  
+
+    --  connexion to mysql 
+	kubectl exec -it mysql-deployment-xxxxxx -n ecommerce-namespace -- bash
+
+
+
+    -- get All deployments and services
+ kubectl get svc -n  ecommerce-namespace
+
+
+ kubectl exec -it mysql-deployment-5b547dfd49-phvfv  -n ecommerce-namespace -- bash
+
+ kubectl describe pod mysql -n ecommerce-namespace

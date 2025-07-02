@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+﻿apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql-deployment
@@ -17,9 +17,18 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: myregistrykubernetes.azurecr.io/mysql-image:latest
+        image: myregistrykubernetes.azurecr.io/mysql:latest
         env:
         - name: MYSQL_ROOT_PASSWORD
-          value: MyLove@1988!
+          value: "MyLove@1988!"
+        - name: MYSQL_DATABASE
+          value: "ecommerceproductsdatabase"
         ports:
         - containerPort: 3306
+      #   volumeMounts:
+      #   - mountPath: /var/lib/mysql
+      #     name: mysql-storage
+      # volumes:
+      # - name: mysql-storage
+      #   persistentVolumeClaim:
+      #     claimName: mysql-pvc
