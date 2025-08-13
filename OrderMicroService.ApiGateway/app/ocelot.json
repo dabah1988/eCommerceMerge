@@ -5,44 +5,41 @@
       "DownstreamPathTemplate": "/api/Orders",
       "DownstreamHostAndPorts": [
         {
-          "Host": "orders-api",
-          "Port": 80
+          "Host": "orders-microservice",
+          "Port": 8080
         }
       ],
-      "UpstreamHttpMethod": [ "Get", "Post", "Options" ],
+      "UpstreamHttpMethod": [ "GET", "POST", "OPTIONS" ],
       "UpstreamScheme": "Http",
       "DownstreamScheme": "Http",
       "FileCacheOptions": {
         "TtlSeconds": 30,
         "Region": "orders"
       }
-
     },
-
     {
       "UpstreamPathTemplate": "/gateway/Orders/by-productId/{productId}",
       "DownstreamPathTemplate": "/api/Orders/by-productId/{productId}",
       "DownstreamHostAndPorts": [
         {
-          "Host": "orders-api",
-          "Port": 80
+          "Host": "orders-microservice",
+          "Port": 8080
         }
       ],
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": [ "GET" ],
       "UpstreamScheme": "Http",
       "DownstreamScheme": "Http"
     },
-
     {
       "UpstreamPathTemplate": "/gateway/Orders/by-date/{orderDate}",
       "DownstreamPathTemplate": "/api/Orders/by-date/{orderDate}",
       "DownstreamHostAndPorts": [
         {
-          "Host": "orders-api",
-          "Port": 80
+          "Host": "orders-microservice",
+          "Port": 8080
         }
       ],
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": [ "GET" ],
       "UpstreamScheme": "Http",
       "DownstreamScheme": "Http",
       "FileCacheOptions": {
@@ -50,17 +47,16 @@
         "Region": "orders"
       }
     },
-
     {
       "UpstreamPathTemplate": "/gateway/Orders/by-userId/{userId}",
       "DownstreamPathTemplate": "/api/Orders/by-userId/{userId}",
       "DownstreamHostAndPorts": [
         {
-          "Host": "orders-api",
-          "Port": 80
+          "Host": "orders-microservice",
+          "Port": 8080
         }
       ],
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": [ "GET" ],
       "UpstreamScheme": "Http",
       "DownstreamScheme": "Http",
       "FileCacheOptions": {
@@ -68,45 +64,29 @@
         "Region": "orders"
       }
     },
-
     {
       "UpstreamPathTemplate": "/gateway/Orders/orderId/{orderId}",
       "DownstreamPathTemplate": "/api/Orders/orderId/{orderId}",
       "DownstreamHostAndPorts": [
         {
-          "Host": "orders-api",
-          "Port": 80
+          "Host": "orders-microservice",
+          "Port": 8080
         }
       ],
-      "UpstreamHttpMethod": [ "Get", "Put", "Delete", "Options" ],
+      "UpstreamHttpMethod": [ "GET", "PUT", "DELETE", "OPTIONS" ],
       "UpstreamScheme": "Http",
       "DownstreamScheme": "Http"
     },
-
-    {
-      "UpstreamPathTemplate": "/",
-      "DownstreamPathTemplate": "/api/products",
-      "UpstreamHttpMethod": [ "Get" ],
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "products-api",
-          "Port": 80
-        }
-      ],
-      "UpstreamScheme": "Http",
-      "DownstreamScheme": "Http"
-    },
-
     {
       "UpstreamPathTemplate": "/gateway/products",
       "DownstreamPathTemplate": "/api/products",
       "DownstreamHostAndPorts": [
         {
-          "Host": "products-api",
-          "Port": 80
+          "Host": "products-microservice",
+          "Port": 8080
         }
       ],
-      "UpstreamHttpMethod": [ "Post", "Put", "Get", "Options" ],
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "OPTIONS" ],
       "UpstreamScheme": "Http",
       "DownstreamScheme": "Http",
       "QoSOptions": {
@@ -126,17 +106,16 @@
         "PeriodTimespan": 30
       }
     },
-
     {
       "UpstreamPathTemplate": "/gateway/products/search/product-id/{productId}",
       "DownstreamPathTemplate": "/api/products/search/product-id/{productId}",
       "DownstreamHostAndPorts": [
         {
-          "Host": "products-api",
-          "Port": 80
+          "Host": "products-microservice",
+          "Port": 8080
         }
       ],
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": [ "GET" ],
       "UpstreamScheme": "Http",
       "DownstreamScheme": "Http",
       "FileCacheOptions": {
@@ -144,17 +123,16 @@
         "Region": "products"
       }
     },
-
     {
       "UpstreamPathTemplate": "/gateway/products/search/{SearchString}",
       "DownstreamPathTemplate": "/api/products/search/{SearchString}",
       "DownstreamHostAndPorts": [
         {
-          "Host": "products-api",
-          "Port": 80
+          "Host": "products-microservice",
+          "Port": 8080
         }
       ],
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": [ "GET" ],
       "UpstreamScheme": "Http",
       "DownstreamScheme": "Http",
       "FileCacheOptions": {
@@ -162,17 +140,16 @@
         "Region": "products"
       }
     },
-
     {
       "UpstreamPathTemplate": "/gateway/products/{productId}",
       "DownstreamPathTemplate": "/api/products/{productId}",
       "DownstreamHostAndPorts": [
         {
-          "Host": "products-api",
-          "Port": 80
+          "Host": "products-microservice",
+          "Port": 8080
         }
       ],
-      "UpstreamHttpMethod": [ "Delete", "Options" ],
+      "UpstreamHttpMethod": [ "DELETE", "OPTIONS" ],
       "UpstreamScheme": "Http",
       "DownstreamScheme": "Http",
       "FileCacheOptions": {
@@ -180,66 +157,73 @@
         "Region": "products"
       }
     },
-
     {
       "UpstreamPathTemplate": "/gateway/Authentication/register",
       "DownstreamPathTemplate": "/api/Authentication/register",
       "DownstreamHostAndPorts": [
         {
-          "Host": "users-api",
-          "Port": 80
+          "Host": "users-microservice",
+          "Port": 9090
         }
       ],
-      "UpstreamHttpMethod": [ "Post", "Options" ],
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
       "UpstreamScheme": "Http",
       "DownstreamScheme": "Http"
     },
-
     {
       "UpstreamPathTemplate": "/gateway/Authentication/login",
       "DownstreamPathTemplate": "/api/Authentication/login",
       "DownstreamHostAndPorts": [
         {
-          "Host": "users-api",
-          "Port": 80
+          "Host": "users-microservice",
+          "Port": 9090
         }
       ],
-      "UpstreamHttpMethod": [ "Post", "Options" ],
+      "UpstreamHttpMethod": [ "GET", "POST", "OPTIONS" ],
       "UpstreamScheme": "Http",
       "DownstreamScheme": "Http"
     },
-
     {
       "UpstreamPathTemplate": "/gateway/Users/{userId}",
       "DownstreamPathTemplate": "/api/Users/{userId}",
       "DownstreamHostAndPorts": [
         {
-          "Host": "users-api",
-          "Port": 80
+          "Host": "users-microservice",
+          "Port": 9090
         }
       ],
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": [ "GET" ],
       "UpstreamScheme": "Http",
       "DownstreamScheme": "Http"
     },
-
-
     {
       "UpstreamPathTemplate": "/gateway/Authentication",
       "DownstreamPathTemplate": "/api/Authentication",
       "DownstreamHostAndPorts": [
         {
-          "Host": "users-api",
-          "Port": 80
+          "Host": "users-microservice",
+          "Port": 9090
         }
       ],
-      "UpstreamHttpMethod": [ "Delete", "Put", "Get", "Post", "Options" ],
+      "UpstreamHttpMethod": [ "DELETE", "PUT", "GET", "POST", "OPTIONS" ],
+      "UpstreamScheme": "Http",
+      "DownstreamScheme": "Http"
+    },
+    {
+      "UpstreamPathTemplate": "/{everything*}",
+      "DownstreamPathTemplate": "/api/products",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "products-microservice",
+          "Port": 8080
+        }
+      ],
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
       "UpstreamScheme": "Http",
       "DownstreamScheme": "Http"
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:5003"
+    "BaseUrl": "http://132.220.162.201:8080"
   }
-
 }
