@@ -10,7 +10,7 @@
         }
       ],
       "UpstreamHttpMethod": [ "GET", "POST", "OPTIONS" ],
-      "UpstreamScheme": "Http",
+      "UpstreamScheme": "Https",
       "DownstreamScheme": "Http",
       "FileCacheOptions": {
         "TtlSeconds": 30,
@@ -27,7 +27,7 @@
         }
       ],
       "UpstreamHttpMethod": [ "GET" ],
-      "UpstreamScheme": "Http",
+      "UpstreamScheme": "Https",
       "DownstreamScheme": "Http"
     },
     {
@@ -40,7 +40,7 @@
         }
       ],
       "UpstreamHttpMethod": [ "GET" ],
-      "UpstreamScheme": "Http",
+      "UpstreamScheme": "Https",
       "DownstreamScheme": "Http",
       "FileCacheOptions": {
         "TtlSeconds": 30,
@@ -57,7 +57,7 @@
         }
       ],
       "UpstreamHttpMethod": [ "GET" ],
-      "UpstreamScheme": "Http",
+      "UpstreamScheme": "Https",
       "DownstreamScheme": "Http",
       "FileCacheOptions": {
         "TtlSeconds": 60,
@@ -74,8 +74,42 @@
         }
       ],
       "UpstreamHttpMethod": [ "GET", "PUT", "DELETE", "OPTIONS" ],
-      "UpstreamScheme": "Http",
+      "UpstreamScheme": "Https",
       "DownstreamScheme": "Http"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/products/search/product-id/{productId}",
+      "DownstreamPathTemplate": "/api/products/search/product-id/{productId}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "products-microservice",
+          "Port": 8080
+        }
+      ],
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "Https",
+      "DownstreamScheme": "Http",
+      "FileCacheOptions": {
+        "TtlSeconds": 30,
+        "Region": "products"
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/products/search/{SearchString}",
+      "DownstreamPathTemplate": "/api/products/search/{SearchString}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "products-microservice",
+          "Port": 8080
+        }
+      ],
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "Https",
+      "DownstreamScheme": "Http",
+      "FileCacheOptions": {
+        "TtlSeconds": 30,
+        "Region": "products"
+      }
     },
     {
       "UpstreamPathTemplate": "/gateway/products",
@@ -87,7 +121,7 @@
         }
       ],
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "OPTIONS" ],
-      "UpstreamScheme": "Http",
+      "UpstreamScheme": "Https",
       "DownstreamScheme": "Http",
       "QoSOptions": {
         "ExceptionsAllowedBeforeBreaking": 3,
@@ -107,40 +141,6 @@
       }
     },
     {
-      "UpstreamPathTemplate": "/gateway/products/search/product-id/{productId}",
-      "DownstreamPathTemplate": "/api/products/search/product-id/{productId}",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "products-microservice",
-          "Port": 8080
-        }
-      ],
-      "UpstreamHttpMethod": [ "GET" ],
-      "UpstreamScheme": "Http",
-      "DownstreamScheme": "Http",
-      "FileCacheOptions": {
-        "TtlSeconds": 30,
-        "Region": "products"
-      }
-    },
-    {
-      "UpstreamPathTemplate": "/gateway/products/search/{SearchString}",
-      "DownstreamPathTemplate": "/api/products/search/{SearchString}",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "products-microservice",
-          "Port": 8080
-        }
-      ],
-      "UpstreamHttpMethod": [ "GET" ],
-      "UpstreamScheme": "Http",
-      "DownstreamScheme": "Http",
-      "FileCacheOptions": {
-        "TtlSeconds": 30,
-        "Region": "products"
-      }
-    },
-    {
       "UpstreamPathTemplate": "/gateway/products/{productId}",
       "DownstreamPathTemplate": "/api/products/{productId}",
       "DownstreamHostAndPorts": [
@@ -150,12 +150,25 @@
         }
       ],
       "UpstreamHttpMethod": [ "DELETE", "OPTIONS" ],
-      "UpstreamScheme": "Http",
+      "UpstreamScheme": "Https",
       "DownstreamScheme": "Http",
       "FileCacheOptions": {
         "TtlSeconds": 30,
         "Region": "products"
       }
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/products/{*everything}",
+      "DownstreamPathTemplate": "/api/products/{everything}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "products-microservice",
+          "Port": 8080
+        }
+      ],
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "UpstreamScheme": "Https",
+      "DownstreamScheme": "Http"
     },
     {
       "UpstreamPathTemplate": "/gateway/Authentication/register",
@@ -167,7 +180,7 @@
         }
       ],
       "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
-      "UpstreamScheme": "Http",
+      "UpstreamScheme": "Https",
       "DownstreamScheme": "Http"
     },
     {
@@ -180,7 +193,7 @@
         }
       ],
       "UpstreamHttpMethod": [ "GET", "POST", "OPTIONS" ],
-      "UpstreamScheme": "Http",
+      "UpstreamScheme": "Https",
       "DownstreamScheme": "Http"
     },
     {
@@ -193,7 +206,7 @@
         }
       ],
       "UpstreamHttpMethod": [ "GET" ],
-      "UpstreamScheme": "Http",
+      "UpstreamScheme": "Https",
       "DownstreamScheme": "Http"
     },
     {
@@ -206,24 +219,24 @@
         }
       ],
       "UpstreamHttpMethod": [ "DELETE", "PUT", "GET", "POST", "OPTIONS" ],
-      "UpstreamScheme": "Http",
+      "UpstreamScheme": "Https",
       "DownstreamScheme": "Http"
     },
     {
-      "UpstreamPathTemplate": "/{everything*}",
-      "DownstreamPathTemplate": "/api/products",
+      "UpstreamPathTemplate": "/{catchAll}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
+      "DownstreamPathTemplate": "/notfound",
       "DownstreamHostAndPorts": [
         {
-          "Host": "products-microservice",
-          "Port": 8080
+          "Host": "dummy",
+          "Port": 80
         }
       ],
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
-      "UpstreamScheme": "Http",
+      "UpstreamScheme": "Https",
       "DownstreamScheme": "Http"
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://132.220.162.201:8080"
+    "BaseUrl": "https://132.220.162.201:8080"
   }
 }
